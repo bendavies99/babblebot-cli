@@ -11,4 +11,4 @@ currently being supported with security updates.
 
 ## Reporting a Vulnerability
 
-if any bugs are found please email [me@bdavies.net](mailto:me@bdavies.net?subject=[GitHub][Bug]%20ts-project-template)
+if any bugs are found please email [me@bdavies.net](mailto:me@bdavies.net?subject=[GitHub][Bug]%20babblebot-cli)

@@ -18,7 +18,7 @@ If yes, please describe what changes and how a user will need to migrate for fut
 
 ### Pull request checklist
 - [ ] Submitted to `next` for breaking changes?
-- [ ] The PR follows all [Contributing Guidelines](https://github.com/bendavies99/ts-project-template/blob/main/CONTRIBUTING.md)
+- [ ] The PR follows all [Contributing Guidelines](https://github.com/bendavies99/babblebot-cli/blob/main/CONTRIBUTING.md)
 - [ ] All new changes have tests and are passing?
 - [ ] Documentation has been updated / adding for all changes?
 
