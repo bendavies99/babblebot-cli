@@ -25,6 +25,10 @@ jobs:
         run: npm test
         env:
           CI: true
+      - name: CodeCov
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true
   publish:
     needs: build
     runs-on: ubuntu-latest
