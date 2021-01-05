@@ -5,8 +5,8 @@
 [![GitHub stars](https://img.shields.io/github/stars/bendavies99/babblebot-cli)](https://github.com/bendavies99/babblebot-cli/stargazers)
 [![GitHub license](https://img.shields.io/github/license/bendavies99/babblebot-cli)](https://github.com/bendavies99/babblebot-cli)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-[![codecov](https://codecov.io/gh/bendavies99/babblebot-cli/branch/master/graph/badge.svg)](https://codecov.io/gh/bendavies99/babblebot-cli)
-[![Build Status](https://travis-ci.org/bendavies99/babblebot-cli.svg?branch=master)](https://travis-ci.org/bendavies99/babblebot-cli)
+[![codecov](https://codecov.io/gh/bendavies99/babblebot-cli/branch/main/graph/badge.svg?token=PF3UAZCWU6)](https://codecov.io/gh/bendavies99/babblebot-cli)
+[![Build Status](https://github.com/bendavies99/babblebot-cli/workflows/CI%20Release/badge.svg?branch=main)](https://github.com/bendavies99/babblebot-cli/actions)
 
 
 ## Getting Started
