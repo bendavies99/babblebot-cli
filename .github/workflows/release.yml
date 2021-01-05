@@ -1,0 +1,44 @@
+name: CI Release
+
+on:
+  push:
+    branches: [ main, next, staging ]
+  pull_request:
+    branches: [ main, next, staging ]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js Enviroment
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: 12.x
+      - name: Run NPM CI
+        run: npm ci --ignore-scripts
+      - name: Build
+        run: npm run build --if-present
+      - name: Test
+        run: npm test
+        env:
+          CI: true
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Install Semantic Release
+        run: npm install -g semantic-release
+      - name: Install
+        run: npm install --ignore-scripts
+      - name: Publish
+        run: semantic-release
+        env:
+              NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+              GH_TOKEN: ${{ secrets.GH_TOKEN }}
