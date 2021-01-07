@@ -27,7 +27,7 @@ import {helloWorld} from '../src';
 describe('Hello Function', () => {
     it('should print Hello Ben! to the console', () => {
         console.log = jest.fn();
-        helloWorld("Ben!");
-        expect(console.log).toBeCalledWith("Hello Ben!");
+        helloWorld('Ben!');
+        expect(console.log).toBeCalledWith('Hello Ben!');
     });
 });
