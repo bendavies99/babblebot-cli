@@ -20,12 +20,22 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
-/**
- * @fileOverview Index file for this library
- * @since 0.0.1
- * @author Ben Davies <me@bdavies.net>
- */
+import {CommandModule} from "yargs";
 
-export * from "./hello";
+export default {
+    command: "install [output]",
+    builder: {
+        output: {
+            default: ".",
+            type: "string",
+            describe: "The directory to install babblebot to",
+            demandOption: true,
+        },
+    },
+    handler: (args) => {
+        console.log(args);
+    },
+} as CommandModule;
