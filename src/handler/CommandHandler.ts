@@ -23,34 +23,15 @@
  *
  */
 
-import { CommandModule } from "yargs";
-import CommandHandler from "../handler/CommandHandler";
-import { InstallProps } from "../handler/InstallCommandHandler";
-
 /**
- * Command Definition for the Install Command
- *
- * @param {CommandHandler<InstallProps>} handler The handler the InstallCommand will run when the command is called
- * @returns {CommandModule<any, { output: string }>} the command module for yargs
+ * Interface for a CommandHandler when the command will call handle when it is called
  */
-export default (
-    handler: CommandHandler<InstallProps>,
-): CommandModule<any, { output: string }> => ({
-    command: "install [output]",
-    builder: {
-        output: {
-            default: ".",
-            type: "string",
-            describe: "The directory to install babblebot to",
-            demandOption: true,
-        },
-    },
-    handler: async (args) => {
-        const result = await handler.handle({ outputDir: args.output });
-        if (result) {
-            console.log("Completed!");
-        } else {
-            console.log("There has been an error");
-        }
-    },
-});
+export default interface CommandHandler<T> {
+    /**
+     * Handle a command
+     *
+     * @param {object} props Properties to pass to the handler
+     * @returns {Promise<boolean>} true if the handler handled the command correctly
+     */
+    handle: (props: T) => Promise<boolean>;
+}
