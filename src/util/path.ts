@@ -29,7 +29,7 @@
  */
 
 import path from "path";
-import {existsSync} from "fs";
+import { existsSync } from "fs";
 
 /**
  * Convert a supplied directory to a string

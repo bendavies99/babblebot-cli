@@ -24,11 +24,16 @@
  */
 
 import yargs from "yargs";
+import CommandHandler from "../../src/handler/CommandHandler";
+import { InstallProps } from "../../src/handler/InstallCommandHandler";
 
 describe("Install Command", () => {
     it("should display --output when running help on install", async () => {
         const installModule = await import("../../src/commands/install");
-        const parser = yargs.command(installModule.default).help();
+        const handleImpl: CommandHandler<InstallProps> = {
+            handle: jest.fn(),
+        };
+        const parser = yargs.command(installModule.default(handleImpl)).help();
         const output = await new Promise((resolve) =>
             parser.parse(
                 "install --help",
@@ -40,19 +45,45 @@ describe("Install Command", () => {
     it("should call handler function when running command", async () => {
         const handler = jest.fn();
         const installModule = await import("../../src/commands/install");
-        installModule.default.handler = handler;
-        const parser = yargs.command(installModule.default).help();
-        parser.parse("install");
+        const module = installModule.default({ handle: jest.fn() });
+        module.handler = handler;
+        const parser = yargs.command(module).help();
+        await parser.parse("install");
         expect(handler).toHaveBeenCalled();
     });
     it("should fun mock with custom directory", async () => {
         const handler = jest.fn();
         const installModule = await import("../../src/commands/install");
-        installModule.default.handler = handler;
-        const parser = yargs.command(installModule.default).help();
-        parser.parse("install --output=" + "babblebot");
+        const module = installModule.default({ handle: jest.fn() });
+        module.handler = handler;
+        const parser = yargs.command(module).help();
+        await parser.parse("install --output=" + "babblebot");
         expect(handler).toHaveBeenCalledWith(
-            expect.objectContaining({output: "babblebot"}),
+            expect.objectContaining({ output: "babblebot" }),
         );
+    });
+    it("should run handle method on handler supplied", async () => {
+        const installModule = await import("../../src/commands/install");
+        console.log = jest.fn();
+        const handleImpl: CommandHandler<InstallProps> = {
+            handle: jest.fn().mockReturnValue(true),
+        };
+        const module = installModule.default(handleImpl);
+        const parser = yargs.command(module).help();
+        await parser.parse("install");
+        expect(handleImpl.handle).toHaveBeenCalledWith({ outputDir: "." });
+        expect(console.log).toHaveBeenCalledWith("Completed!");
+    });
+    it("should log an error if the handle went wrong", async () => {
+        const installModule = await import("../../src/commands/install");
+        console.log = jest.fn();
+        const handleImpl: CommandHandler<InstallProps> = {
+            handle: jest.fn().mockReturnValue(false),
+        };
+        const module = installModule.default(handleImpl);
+        const parser = yargs.command(module).help();
+        await parser.parse("install");
+        expect(handleImpl.handle).toHaveBeenCalledWith({ outputDir: "." });
+        expect(console.log).toHaveBeenCalledWith("There has been an error");
     });
 });

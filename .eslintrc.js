@@ -12,6 +12,7 @@ module.exports = {
             {
                 endOfLine: "auto",
                 singleQuote: false,
+                bracketSpacing: true,
             },
         ],
         "comma-dangle": 0,

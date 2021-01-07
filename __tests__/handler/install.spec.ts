@@ -23,34 +23,27 @@
  *
  */
 
-import { CommandModule } from "yargs";
-import CommandHandler from "../handler/CommandHandler";
-import { InstallProps } from "../handler/InstallCommandHandler";
+import InstallCommandHandler from "../../src/handler/InstallCommandHandler";
 
-/**
- * Command Definition for the Install Command
- *
- * @param {CommandHandler<InstallProps>} handler The handler the InstallCommand will run when the command is called
- * @returns {CommandModule<any, { output: string }>} the command module for yargs
- */
-export default (
-    handler: CommandHandler<InstallProps>,
-): CommandModule<any, { output: string }> => ({
-    command: "install [output]",
-    builder: {
-        output: {
-            default: ".",
-            type: "string",
-            describe: "The directory to install babblebot to",
-            demandOption: true,
-        },
-    },
-    handler: async (args) => {
-        const result = await handler.handle({ outputDir: args.output });
-        if (result) {
-            console.log("Completed!");
-        } else {
-            console.log("There has been an error");
-        }
-    },
+describe("Install Command Handler", () => {
+    it("should error to the user if babblebot is already installed the directory and return false", async () => {
+        console.log = jest.fn();
+        const path = process.cwd() + "/__tests__/testDir/with";
+        const handler = new InstallCommandHandler();
+        const result = await handler.handle({ outputDir: path });
+        expect(console.log).toHaveBeenCalledWith(
+            expect.stringContaining("Error: Babblebot already installed here"),
+        );
+        expect(result).toBe(false);
+    });
+    it("should return true for the handler with no console errors", async () => {
+        console.log = jest.fn();
+        const path = process.cwd() + "/__tests__/testDir";
+        const handler = new InstallCommandHandler();
+        const result = await handler.handle({ outputDir: path });
+        expect(console.log).not.toHaveBeenCalledWith(
+            expect.stringContaining("Error: Babblebot already installed here"),
+        );
+        expect(result).toBe(true);
+    });
 });

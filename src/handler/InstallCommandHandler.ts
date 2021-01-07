@@ -22,35 +22,32 @@
  * SOFTWARE.
  *
  */
+import CommandHandler from "./CommandHandler";
+import { directoryExists } from "../util/path";
 
-import { CommandModule } from "yargs";
-import CommandHandler from "../handler/CommandHandler";
-import { InstallProps } from "../handler/InstallCommandHandler";
+export interface InstallProps {
+    readonly outputDir: string;
+}
 
 /**
- * Command Definition for the Install Command
- *
- * @param {CommandHandler<InstallProps>} handler The handler the InstallCommand will run when the command is called
- * @returns {CommandModule<any, { output: string }>} the command module for yargs
+ * Class is for handling commands
  */
-export default (
-    handler: CommandHandler<InstallProps>,
-): CommandModule<any, { output: string }> => ({
-    command: "install [output]",
-    builder: {
-        output: {
-            default: ".",
-            type: "string",
-            describe: "The directory to install babblebot to",
-            demandOption: true,
-        },
-    },
-    handler: async (args) => {
-        const result = await handler.handle({ outputDir: args.output });
-        if (result) {
-            console.log("Completed!");
-        } else {
-            console.log("There has been an error");
+export default class InstallCommandHandler
+    implements CommandHandler<InstallProps> {
+    /**
+     * Handle the command
+     *
+     * @param {InstallProps} _props props for current command context
+     * @returns {Promise<boolean>} true if no errors occurred
+     */
+    public async handle(_props: InstallProps): Promise<boolean> {
+        if (
+            directoryExists(_props.outputDir + "/lib") &&
+            directoryExists(_props.outputDir + "/bin")
+        ) {
+            console.log("Error: Babblebot already installed here");
+            return false;
         }
-    },
-});
+        return true;
+    }
+}
