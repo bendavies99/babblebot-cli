@@ -25,12 +25,21 @@
 import CommandHandler from "./CommandHandler";
 import { directoryExists } from "../util/path";
 
+/**
+ * Properties Interface that describes what will be passed to the handle method
+ *
+ * @author Ben Davies <me@bdavies.net>
+ * @since 1.0.0
+ */
 export interface InstallProps {
     readonly outputDir: string;
 }
 
 /**
  * Class is for handling commands
+ *
+ * @author Ben Davies <me@bdavies.net>
+ * @since 1.0.0
  */
 export default class InstallCommandHandler
     implements CommandHandler<InstallProps> {

@@ -25,6 +25,9 @@
 
 /**
  * Interface for a CommandHandler when the command will call handle when it is called
+ *
+ * @author Ben Davies <me@bdavies.net>
+ * @since 1.0.0
  */
 export default interface CommandHandler<T> {
     /**

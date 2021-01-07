@@ -32,11 +32,19 @@ import { InstallProps } from "../handler/InstallCommandHandler";
  *
  * @param {CommandHandler<InstallProps>} handler The handler the InstallCommand will run when the command is called
  * @returns {CommandModule<any, { output: string }>} the command module for yargs
+ * @author Ben Davies <me@bdavies.net>
+ * @since 1.0.0
  */
 export default (
     handler: CommandHandler<InstallProps>,
 ): CommandModule<any, { output: string }> => ({
+    /**
+     * The command definition
+     */
     command: "install [output]",
+    /**
+     * Argument Builder
+     */
     builder: {
         output: {
             default: ".",
@@ -45,6 +53,12 @@ export default (
             demandOption: true,
         },
     },
+    /**
+     * Command Handler
+     *
+     * @param {{output: string}} args arguments from the parsed command
+     * @returns {void}
+     */
     handler: async (args) => {
         const result = await handler.handle({ outputDir: args.output });
         if (result) {

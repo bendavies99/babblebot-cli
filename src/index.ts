@@ -23,9 +23,7 @@
  */
 
 /**
- * @fileOverview Index file for this library
- * @since 0.0.1
+ * @file Index file for this library
  * @author Ben Davies <me@bdavies.net>
+ * @since 1.0.0
  */
-
-export * from "./hello";
