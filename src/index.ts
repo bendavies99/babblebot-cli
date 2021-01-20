@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+/* istanbul ignore file */
 /*
  * MIT License
  *
@@ -22,8 +24,34 @@
  * SOFTWARE.
  */
 
+import chalk from "chalk";
+import clear from "clear";
+import figlet from "figlet";
+import yargs from "yargs";
+import installCommand from "./commands/install";
+import InstallCommandHandler from "./handler/InstallCommandHandler";
+import GithubClientImpl from "./util/github";
+
 /**
  * @file Index file for this library
  * @author Ben Davies <me@bdavies.net>
  * @since 1.0.0
  */
+
+// Clear the console to start the cli
+clear({ fullClear: true });
+
+// Display The Babblebot CLI Logo
+console.log(
+    chalk.blueBright(
+        figlet.textSync("Babblebot CLI", { horizontalLayout: "full" }),
+    ),
+);
+
+// Setup yargs for command processing
+yargs
+    .scriptName("babblebot-cli")
+    .usage("$0 <cmd> [args]")
+    .demandCommand()
+    .command(installCommand(new InstallCommandHandler(new GithubClientImpl())))
+    .help().argv;

@@ -28,6 +28,14 @@ import CommandHandler from "../handler/CommandHandler";
 import { InstallProps } from "../handler/InstallCommandHandler";
 
 /**
+ * Command Args Interface
+ */
+interface InstallCommandArgs {
+    readonly output: string;
+    readonly dryrun: boolean;
+}
+
+/**
  * Command Definition for the Install Command
  *
  * @param {CommandHandler<InstallProps>} handler The handler the InstallCommand will run when the command is called
@@ -37,11 +45,11 @@ import { InstallProps } from "../handler/InstallCommandHandler";
  */
 export default (
     handler: CommandHandler<InstallProps>,
-): CommandModule<any, { output: string }> => ({
+): CommandModule<any, InstallCommandArgs> => ({
     /**
      * The command definition
      */
-    command: "install [output]",
+    command: "install [dryrun] [output]",
     /**
      * Argument Builder
      */
@@ -52,15 +60,25 @@ export default (
             describe: "The directory to install babblebot to",
             demandOption: true,
         },
+        dryrun: {
+            default: false,
+            type: "boolean",
+            boolean: true,
+            describe:
+                "Run the install command without affecting any of the filesystems",
+        },
     },
     /**
      * Command Handler
      *
-     * @param {{output: string}} args arguments from the parsed command
+     * @param {InstallCommandArgs} args arguments from the parsed command
      * @returns {void}
      */
-    handler: async (args) => {
-        const result = await handler.handle({ outputDir: args.output });
+    handler: async (args: InstallCommandArgs): Promise<void> => {
+        const result = await handler.handle({
+            outputDir: args.output,
+            dryrun: args.dryrun,
+        });
         if (result) {
             console.log("Completed!");
         } else {

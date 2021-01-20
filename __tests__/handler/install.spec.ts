@@ -29,8 +29,8 @@ describe("Install Command Handler", () => {
     it("should error to the user if babblebot is already installed the directory and return false", async () => {
         console.log = jest.fn();
         const path = process.cwd() + "/__tests__/testDir/with";
-        const handler = new InstallCommandHandler();
-        const result = await handler.handle({ outputDir: path });
+        const handler = new InstallCommandHandler({ getReleases: async () => { return []; } });
+        const result = await handler.handle({ outputDir: path, dryrun: true });
         expect(console.log).toHaveBeenCalledWith(
             expect.stringContaining("Error: Babblebot already installed here"),
         );
@@ -39,11 +39,13 @@ describe("Install Command Handler", () => {
     it("should return true for the handler with no console errors", async () => {
         console.log = jest.fn();
         const path = process.cwd() + "/__tests__/testDir";
-        const handler = new InstallCommandHandler();
-        const result = await handler.handle({ outputDir: path });
+        const mock = jest.fn().mockReturnValue([null, "Test"]);
+        const handler = new InstallCommandHandler({ getReleases: mock });
+        const result = await handler.handle({ outputDir: path, dryrun: true });
         expect(console.log).not.toHaveBeenCalledWith(
             expect.stringContaining("Error: Babblebot already installed here"),
         );
         expect(result).toBe(true);
+        expect(mock).toHaveReturnedWith([null, "Test"]);
     });
 });

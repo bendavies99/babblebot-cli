@@ -24,6 +24,8 @@
  */
 import CommandHandler from "./CommandHandler";
 import { directoryExists } from "../util/path";
+import chalk from "chalk";
+import { GithubClient } from "src/util/github";
 
 /**
  * Properties Interface that describes what will be passed to the handle method
@@ -33,6 +35,7 @@ import { directoryExists } from "../util/path";
  */
 export interface InstallProps {
     readonly outputDir: string;
+    readonly dryrun: boolean;
 }
 
 /**
@@ -44,6 +47,13 @@ export interface InstallProps {
 export default class InstallCommandHandler
     implements CommandHandler<InstallProps> {
     /**
+     * Construct a Install Command Handler
+     *
+     * @param {GithubClient} ghClient The Github Client dependancy
+     */
+    constructor(private ghClient: GithubClient) {}
+
+    /**
      * Handle the command
      *
      * @param {InstallProps} _props props for current command context
@@ -54,9 +64,13 @@ export default class InstallCommandHandler
             directoryExists(_props.outputDir + "/lib") &&
             directoryExists(_props.outputDir + "/bin")
         ) {
-            console.log("Error: Babblebot already installed here");
+            console.log(
+                chalk.red.bold("Error: Babblebot already installed here"),
+            );
             return false;
         }
+        const releases = await this.ghClient.getReleases();
+        console.log(releases);
         return true;
     }
 }
