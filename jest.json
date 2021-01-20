@@ -4,7 +4,10 @@
       "tsconfig": "tsconfig.json"
     }
   },
-  "moduleFileExtensions": ["ts", "js"],
+  "moduleFileExtensions": [
+    "ts",
+    "js"
+  ],
   "transform": {
     "^.+\\.(ts|tsx)$": "ts-jest"
   },
@@ -19,6 +22,11 @@
   "collectCoverageFrom": [
     "src/**/*.ts"
   ],
-  "testMatch": ["**/__tests__/**/*.spec.(ts|js)"],
+  "testPathIgnorePatterns": [
+    "src/index.ts"
+  ],
+  "testMatch": [
+    "**/__tests__/**/*.spec.(ts|js)"
+  ],
   "testEnvironment": "node"
 }

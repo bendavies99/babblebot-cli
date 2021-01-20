@@ -71,7 +71,7 @@ describe("Install Command", () => {
         const module = installModule.default(handleImpl);
         const parser = yargs.command(module).help();
         await parser.parse("install");
-        expect(handleImpl.handle).toHaveBeenCalledWith({ outputDir: "." });
+        expect(handleImpl.handle).toHaveBeenCalledWith({ outputDir: ".", dryrun: false });
         expect(console.log).toHaveBeenCalledWith("Completed!");
     });
     it("should log an error if the handle went wrong", async () => {
@@ -82,8 +82,8 @@ describe("Install Command", () => {
         };
         const module = installModule.default(handleImpl);
         const parser = yargs.command(module).help();
-        await parser.parse("install");
-        expect(handleImpl.handle).toHaveBeenCalledWith({ outputDir: "." });
+        await parser.parse("install --dryrun");
+        expect(handleImpl.handle).toHaveBeenCalledWith({ outputDir: ".", dryrun: true });
         expect(console.log).toHaveBeenCalledWith("There has been an error");
     });
 });

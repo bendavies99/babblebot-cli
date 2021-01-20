@@ -29,6 +29,8 @@ import {
     validatePath,
 } from "../../src/util/path";
 
+import os from "os";
+
 describe("Path Utilities", () => {
     describe("Retrieve Output Directory", () => {
         it("should output the current working directory plus the relative path", () => {
@@ -37,7 +39,7 @@ describe("Path Utilities", () => {
         });
 
         it("should be same as what is entered", () => {
-            const pathString = "C:/Users/Test/babblebot";
+            const pathString = os.type().match(/windows/i) ? "C:/Users/Test/babblebot" : "/etc/bin/babblebot";
             const pathValue = retrieveOutputDirectory(pathString);
             expect(pathValue).toBe(pathString);
         });
