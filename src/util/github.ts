@@ -46,14 +46,12 @@ interface Release {
  * @since 1.0.0
  */
 export default class GithubClientImpl implements GithubClient {
-    private restClient: Octokit;
-
     /**
      * Construct a Github Client
+     *
+     * @param {OctoKit} restClient The client to connect to github
      */
-    constructor() {
-        this.restClient = new Octokit();
-    }
+    constructor(private restClient: Octokit) {}
 
     /**
      * Map Releases data from Octokit to interface
