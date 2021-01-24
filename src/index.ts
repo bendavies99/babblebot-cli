@@ -24,6 +24,7 @@
  * SOFTWARE.
  */
 
+import { Octokit } from "@octokit/rest";
 import chalk from "chalk";
 import clear from "clear";
 import figlet from "figlet";
@@ -53,5 +54,9 @@ yargs
     .scriptName("babblebot-cli")
     .usage("$0 <cmd> [args]")
     .demandCommand()
-    .command(installCommand(new InstallCommandHandler(new GithubClientImpl())))
+    .command(
+        installCommand(
+            new InstallCommandHandler(new GithubClientImpl(new Octokit())),
+        ),
+    )
     .help().argv;
