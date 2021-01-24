@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/bendavies99/babblebot-cli/compare/v1.0.0...v1.0.1) (2021-01-24)
+
+
+### Bug Fixes
+
+* Add files to releases ([8073da2](https://github.com/bendavies99/babblebot-cli/commit/8073da22c4b14714ba5f404d76da6c2a24d8bef4))
+
 # 1.0.0 (2021-01-24)
 
 
