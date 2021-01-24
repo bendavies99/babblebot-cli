@@ -60,6 +60,14 @@ export default class InstallCommandHandler
      * @returns {Promise<boolean>} true if no errors occurred
      */
     public async handle(_props: InstallProps): Promise<boolean> {
+        if (_props.dryrun) {
+            console.log(
+                chalk.yellow.bold(
+                    "Running in Dry Run Mode, Nothing will be committed to your filesystem",
+                ),
+            );
+        }
+
         if (
             directoryExists(_props.outputDir + "/lib") &&
             directoryExists(_props.outputDir + "/bin")

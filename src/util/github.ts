@@ -21,6 +21,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+import { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
+
 export interface GithubClient {
     /**
      * Get all the releases for Babblebot for the user to choose a version
@@ -44,12 +46,46 @@ interface Release {
  * @since 1.0.0
  */
 export default class GithubClientImpl implements GithubClient {
+    private restClient: Octokit;
+
+    /**
+     * Construct a Github Client
+     */
+    constructor() {
+        this.restClient = new Octokit();
+    }
+
+    /**
+     * Map Releases data from Octokit to interface
+     *
+     * @param {{data: any[]}} releases The releases data to map
+     * @returns {Promise<Release[]>} a list of mapped releases
+     */
+    private async mapReleasesData(
+        releases: Promise<
+            RestEndpointMethodTypes["repos"]["listReleases"]["response"]
+        >,
+    ): Promise<Release[]> {
+        const data = (await releases).data;
+        return data.map((r) => ({
+            tagName: r.tag_name,
+            isPrerelease: r.prerelease,
+            tarUrl: r.tarball_url || "",
+            zipUrl: r.zipball_url || "",
+        }));
+    }
+
     /**
      * Get all the releases for Babblebot for the user to choose a version
      *
      * @returns {Promise<Release[]>} A list of releases
      */
     public async getReleases(): Promise<Release[]> {
-        return [];
+        return this.mapReleasesData(
+            this.restClient.repos.listReleases({
+                owner: "bendavies99",
+                repo: "Babblebot-Server",
+            }),
+        );
     }
 }
