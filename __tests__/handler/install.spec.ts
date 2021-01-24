@@ -29,10 +29,42 @@ describe("Install Command Handler", () => {
     it("should error to the user if babblebot is already installed the directory and return false", async () => {
         console.log = jest.fn();
         const path = process.cwd() + "/__tests__/testDir/with";
-        const handler = new InstallCommandHandler({ getReleases: async () => { return []; } });
+        const handler = new InstallCommandHandler({
+            getReleases: async () => {
+                return [];
+            },
+        });
         const result = await handler.handle({ outputDir: path, dryrun: true });
         expect(console.log).toHaveBeenCalledWith(
             expect.stringContaining("Error: Babblebot already installed here"),
+        );
+        expect(result).toBe(false);
+    });
+    it("should warn the user if running in dry run mode", async () => {
+        console.log = jest.fn();
+        const path = process.cwd() + "/__tests__/testDir";
+        const handler = new InstallCommandHandler({
+            getReleases: async () => {
+                return [];
+            },
+        });
+        const result = await handler.handle({ outputDir: path, dryrun: true });
+        expect(console.log).toHaveBeenCalledWith(
+            expect.stringContaining("Dry Run"),
+        );
+        expect(result).toBe(true);
+    });
+    it("should not warn the user if running not in dry run mode", async () => {
+        console.log = jest.fn();
+        const path = process.cwd() + "/__tests__/testDir/with";
+        const handler = new InstallCommandHandler({
+            getReleases: async () => {
+                return [];
+            },
+        });
+        const result = await handler.handle({ outputDir: path, dryrun: false });
+        expect(console.log).not.toHaveBeenCalledWith(
+            expect.stringContaining("Dry Run"),
         );
         expect(result).toBe(false);
     });
